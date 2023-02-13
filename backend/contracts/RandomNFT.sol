@@ -47,24 +47,17 @@ contract RandomNFT is ERC721, ERC721URIStorage, Ownable, VRFConsumerBaseV2 {
     // retrieve 1 random values in one request.
     uint32 numWords = 1;
     /**
-     * HARDCODED FOR GOERLI
-     * COORDINATOR: 0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D
-     */
-    /**
-     * Avalanche Fuji testnet
-     * COORDINATOR: 0x2eD832Ba664535e5886b75D64C46EB9a228C2610
+     * GOERLI COORDINATOR: 0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D
+     * Avalanche Fuji testnet COORDINATOR: 0x2eD832Ba664535e5886b75D64C46EB9a228C2610
      */
     event RequestSent(uint256 requestId, uint32 numWords);
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
     event WithdrawByOwner(address owner, uint256 amount, uint256 time);
     event NftMinted(uint256 tokenId, address buyer);
 
-    error RandomNFT__NotEnoughFundToMint();
+    error RandomNFT__MintFeeSentNotCorrect();
     error RandomNFT__NoMoreNFT();
     error RandomNFT__SentOwnerFailed();
-
-    //10000000000000000
-    //["testURI1","testURI2","testURI3","testURI4","testURI5"]
 
     constructor(uint64 subscriptionId, uint256 mintFee, string[] memory _tokenURIArr) ERC721("NZToken", "NZT") VRFConsumerBaseV2(0x2eD832Ba664535e5886b75D64C46EB9a228C2610)
         {
@@ -86,8 +79,8 @@ contract RandomNFT is ERC721, ERC721URIStorage, Ownable, VRFConsumerBaseV2 {
         if (tokenURIIdsArr.length == 0) {
             revert RandomNFT__NoMoreNFT();
         }
-        if (msg.value < i_mintFee) {
-            revert RandomNFT__NotEnoughFundToMint();
+        if (msg.value != i_mintFee ) {
+            revert RandomNFT__MintFeeSentNotCorrect();
         }
         requestId = COORDINATOR.requestRandomWords(
             keyHash,
