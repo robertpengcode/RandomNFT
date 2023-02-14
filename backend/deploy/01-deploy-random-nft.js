@@ -1,5 +1,4 @@
 const { network } = require("hardhat");
-const { DECIMALS, INITIAL_PRICE } = require("../helper-hardhat-config");
 const {
   networkConfig,
   developmentChains,

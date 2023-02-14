@@ -52,8 +52,8 @@ contract RandomNFT is ERC721, ERC721URIStorage, Ownable, VRFConsumerBaseV2 {
      */
     event RequestSent(uint256 requestId, uint32 numWords);
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
-    event WithdrawByOwner(address owner, uint256 amount, uint256 time);
-    event NftMinted(uint256 tokenId, address buyer);
+    event WithdrawByOwner(address indexed owner, uint256 amount, uint256 time);
+    event NftMinted(uint256 indexed tokenId, address indexed buyer);
 
     error RandomNFT__MintFeeSentNotCorrect();
     error RandomNFT__NoMoreNFT();
